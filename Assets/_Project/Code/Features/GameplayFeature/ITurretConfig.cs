@@ -5,5 +5,6 @@ namespace FacturaCar.Features.GameplayFeature
     float MaxAngle { get; }
     float DegreesPerScreenWidth { get; }
     float RotationSpeed { get; }
+    float FireRate { get; }
   }
 }

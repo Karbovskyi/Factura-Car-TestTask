@@ -8,9 +8,11 @@ namespace FacturaCar.Features.GameplayFeature
     [SerializeField, Range(0f, 180f)] private float _maxAngle;
     [SerializeField, Min(0f)] private float _degreesPerScreenWidth;
     [SerializeField, Min(0f)] private float _rotationSpeed;
+    [SerializeField, Min(0.1f)] private float _fireRate;
 
     public float MaxAngle => _maxAngle;
     public float DegreesPerScreenWidth => _degreesPerScreenWidth;
     public float RotationSpeed => _rotationSpeed;
+    public float FireRate => _fireRate;
   }
 }

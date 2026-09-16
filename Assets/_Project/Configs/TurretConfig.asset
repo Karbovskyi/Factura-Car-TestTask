@@ -15,3 +15,4 @@ MonoBehaviour:
   _maxAngle: 70
   _degreesPerScreenWidth: 180
   _rotationSpeed: 360
+  _fireRate: 8

@@ -498,6 +498,7 @@ MonoBehaviour:
   autoInjectGameObjects: []
   _carConfig: {fileID: 11400000, guid: 7370fe875d095a743ad9224e649553f3, type: 2}
   _turretConfig: {fileID: 11400000, guid: 96d95936fc3e5ab4195891bc02401647, type: 2}
+  _bulletConfig: {fileID: 11400000, guid: 256988a66f1956f498b16115a998c70e, type: 2}
   _levelConfig: {fileID: 11400000, guid: 1b6ac8ac550e01140ae21c4671dd1f87, type: 2}
   _cameraFollow: {fileID: 330585548}
   _finishLine: {fileID: 207610863}

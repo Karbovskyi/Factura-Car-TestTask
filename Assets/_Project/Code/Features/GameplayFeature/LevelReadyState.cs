@@ -21,11 +21,11 @@ namespace FacturaCar.Features.GameplayFeature
     {
       _car.ResetToStart();
       _turret.ResetAim();
-      _gameInput.Tapped += OnTapped;
+      _gameInput.Pressed += OnPressed;
     }
 
-    public void Exit() => _gameInput.Tapped -= OnTapped;
+    public void Exit() => _gameInput.Pressed -= OnPressed;
 
-    private void OnTapped() => _appStateMachine.Enter<LevelPlayState>();
+    private void OnPressed() => _appStateMachine.Enter<LevelPlayState>();
   }
 }

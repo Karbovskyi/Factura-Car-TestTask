@@ -21,15 +21,15 @@ namespace FacturaCar.Features.GameplayFeature
     {
       _car.Stop();
       _winView.Show();
-      _gameInput.Tapped += OnTapped;
+      _gameInput.Pressed += OnPressed;
     }
 
     public void Exit()
     {
-      _gameInput.Tapped -= OnTapped;
+      _gameInput.Pressed -= OnPressed;
       _winView.Hide();
     }
 
-    private void OnTapped() => _appStateMachine.Enter<LevelReadyState>();
+    private void OnPressed() => _appStateMachine.Enter<LevelReadyState>();
   }
 }

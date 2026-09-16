@@ -27,17 +27,31 @@ namespace FacturaCar.Features.GameplayFeature
     public void Enter()
     {
       _car.StartDriving();
+
+      if (_gameInput.IsPressed)
+        _turret.StartFiring();
+
       _finishLine.Reached += OnFinishReached;
+      _gameInput.Pressed += OnPressed;
+      _gameInput.Released += OnReleased;
       _gameInput.Dragged += OnDragged;
     }
 
     public void Exit()
     {
       _finishLine.Reached -= OnFinishReached;
+      _gameInput.Pressed -= OnPressed;
+      _gameInput.Released -= OnReleased;
       _gameInput.Dragged -= OnDragged;
+
+      _turret.StopFiring();
     }
 
     private void OnFinishReached() => _appStateMachine.Enter<LevelWinState>();
+
+    private void OnPressed() => _turret.StartFiring();
+
+    private void OnReleased() => _turret.StopFiring();
 
     private void OnDragged(float screenWidths) => _turret.Aim(screenWidths);
   }
