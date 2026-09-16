@@ -6,5 +6,8 @@ namespace FacturaCar.Features.GameplayFeature
   {
     float Length { get; }
     GameObject GroundSegmentPrefab { get; }
+    int EnemyCount { get; }
+    float EnemySpawnStartDistance { get; }
+    float EnemySpawnHalfWidth { get; }
   }
 }

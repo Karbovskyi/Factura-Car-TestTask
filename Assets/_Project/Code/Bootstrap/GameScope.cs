@@ -11,10 +11,11 @@ namespace FacturaCar.Bootstrap
     [SerializeField] private CarConfig _carConfig;
     [SerializeField] private TurretConfig _turretConfig;
     [SerializeField] private BulletConfig _bulletConfig;
+    [SerializeField] private EnemyConfig _enemyConfig;
     [SerializeField] private LevelConfig _levelConfig;
     [SerializeField] private CameraFollow _cameraFollow;
     [SerializeField] private FinishLine _finishLine;
-    [SerializeField] private WinView _winView;
+    [SerializeField] private ResultView _resultView;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -23,10 +24,11 @@ namespace FacturaCar.Bootstrap
           _carConfig,
           _turretConfig,
           _bulletConfig,
+          _enemyConfig,
           _levelConfig,
           _cameraFollow,
           _finishLine,
-          _winView)
+          _resultView)
         .Install(builder);
 
       builder.RegisterEntryPoint<GameEntryPoint>();

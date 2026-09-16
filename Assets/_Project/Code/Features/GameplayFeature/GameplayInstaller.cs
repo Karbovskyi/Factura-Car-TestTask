@@ -8,27 +8,30 @@ namespace FacturaCar.Features.GameplayFeature
     private readonly CarConfig _carConfig;
     private readonly TurretConfig _turretConfig;
     private readonly BulletConfig _bulletConfig;
+    private readonly EnemyConfig _enemyConfig;
     private readonly LevelConfig _levelConfig;
     private readonly CameraFollow _cameraFollow;
     private readonly FinishLine _finishLine;
-    private readonly WinView _winView;
+    private readonly ResultView _resultView;
 
     public GameplayInstaller(
       CarConfig carConfig,
       TurretConfig turretConfig,
       BulletConfig bulletConfig,
+      EnemyConfig enemyConfig,
       LevelConfig levelConfig,
       CameraFollow cameraFollow,
       FinishLine finishLine,
-      WinView winView)
+      ResultView resultView)
     {
       _carConfig = carConfig;
       _turretConfig = turretConfig;
       _bulletConfig = bulletConfig;
+      _enemyConfig = enemyConfig;
       _levelConfig = levelConfig;
       _cameraFollow = cameraFollow;
       _finishLine = finishLine;
-      _winView = winView;
+      _resultView = resultView;
     }
 
     public void Install(IContainerBuilder builder)
@@ -36,22 +39,28 @@ namespace FacturaCar.Features.GameplayFeature
       builder.RegisterInstance<ICarConfig>(_carConfig);
       builder.RegisterInstance<ITurretConfig>(_turretConfig);
       builder.RegisterInstance<IBulletConfig>(_bulletConfig);
+      builder.RegisterInstance<IEnemyConfig>(_enemyConfig);
       builder.RegisterInstance<ILevelConfig>(_levelConfig);
       builder.RegisterComponent(_cameraFollow);
       builder.RegisterComponent(_finishLine);
-      builder.RegisterComponent(_winView);
+      builder.RegisterComponent(_resultView);
 
       builder.Register<GameInput>(Lifetime.Scoped);
       builder.Register<GroundFactory>(Lifetime.Scoped);
       builder.Register<BulletFactory>(Lifetime.Scoped);
+      builder.Register<EnemyFactory>(Lifetime.Scoped);
+      builder.Register<EnemySpawner>(Lifetime.Scoped);
       builder.Register<CarFactory>(Lifetime.Scoped);
       builder.Register(resolver => resolver.Resolve<CarFactory>().Create(), Lifetime.Scoped);
       builder.Register(resolver => resolver.Resolve<Car>().Turret, Lifetime.Scoped);
+      builder.Register(resolver => resolver.Resolve<Car>().GetComponentInChildren<HealthBarView>(), Lifetime.Scoped);
+      builder.RegisterEntryPoint<GameplayMediator>().AsSelf();
 
       builder.Register<LevelLoadState>(Lifetime.Scoped);
       builder.Register<LevelReadyState>(Lifetime.Scoped);
       builder.Register<LevelPlayState>(Lifetime.Scoped);
       builder.Register<LevelWinState>(Lifetime.Scoped);
+      builder.Register<LevelLoseState>(Lifetime.Scoped);
     }
   }
 }

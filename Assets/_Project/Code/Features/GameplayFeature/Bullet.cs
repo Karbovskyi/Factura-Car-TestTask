@@ -29,11 +29,38 @@ namespace FacturaCar.Features.GameplayFeature
 
     private void Update()
     {
-      transform.position += transform.forward * (_config.Speed * Time.deltaTime);
+      float step = _config.Speed * Time.deltaTime;
+
+      if (TryHitEnemy(step))
+      {
+        _pool.Release(this);
+        return;
+      }
+
+      transform.position += transform.forward * step;
       _flightTime += Time.deltaTime;
 
       if (_flightTime >= _config.Lifetime)
         _pool.Release(this);
+    }
+
+    private bool TryHitEnemy(float step)
+    {
+      bool isHit = Physics.SphereCast(
+        transform.position,
+        _config.HitRadius,
+        transform.forward,
+        out RaycastHit hit,
+        step,
+        _config.HitLayers,
+        QueryTriggerInteraction.Collide);
+
+      if (!isHit || !hit.collider.TryGetComponent(out Enemy enemy))
+        return false;
+
+      enemy.TakeDamage(_config.Damage);
+
+      return true;
     }
   }
 }

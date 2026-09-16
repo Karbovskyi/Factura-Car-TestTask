@@ -6,11 +6,13 @@ namespace FacturaCar.Features.GameplayFeature
   public class CarConfig : ScriptableObject, ICarConfig
   {
     [SerializeField] private Car _prefab;
+    [SerializeField, Min(1)] private int _maxHealth;
     [SerializeField, Min(0f)] private float _speed;
     [SerializeField, Min(0f)] private float _acceleration;
     [SerializeField, Min(0f)] private float _braking;
 
     public Car Prefab => _prefab;
+    public int MaxHealth => _maxHealth;
     public float Speed => _speed;
     public float Acceleration => _acceleration;
     public float Braking => _braking;

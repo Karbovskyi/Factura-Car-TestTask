@@ -32,6 +32,7 @@ namespace FacturaCar.Features.GameplayFeature
         _turret.StartFiring();
 
       _finishLine.Reached += OnFinishReached;
+      _car.Died += OnCarDied;
       _gameInput.Pressed += OnPressed;
       _gameInput.Released += OnReleased;
       _gameInput.Dragged += OnDragged;
@@ -40,6 +41,7 @@ namespace FacturaCar.Features.GameplayFeature
     public void Exit()
     {
       _finishLine.Reached -= OnFinishReached;
+      _car.Died -= OnCarDied;
       _gameInput.Pressed -= OnPressed;
       _gameInput.Released -= OnReleased;
       _gameInput.Dragged -= OnDragged;
@@ -48,6 +50,8 @@ namespace FacturaCar.Features.GameplayFeature
     }
 
     private void OnFinishReached() => _appStateMachine.Enter<LevelWinState>();
+
+    private void OnCarDied() => _appStateMachine.Enter<LevelLoseState>();
 
     private void OnPressed() => _turret.StartFiring();
 

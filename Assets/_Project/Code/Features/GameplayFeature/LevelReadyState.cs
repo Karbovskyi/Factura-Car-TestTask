@@ -7,13 +7,20 @@ namespace FacturaCar.Features.GameplayFeature
     private readonly IAppStateMachine _appStateMachine;
     private readonly Car _car;
     private readonly Turret _turret;
+    private readonly EnemySpawner _enemySpawner;
     private readonly GameInput _gameInput;
 
-    public LevelReadyState(IAppStateMachine appStateMachine, Car car, Turret turret, GameInput gameInput)
+    public LevelReadyState(
+      IAppStateMachine appStateMachine,
+      Car car,
+      Turret turret,
+      EnemySpawner enemySpawner,
+      GameInput gameInput)
     {
       _appStateMachine = appStateMachine;
       _car = car;
       _turret = turret;
+      _enemySpawner = enemySpawner;
       _gameInput = gameInput;
     }
 
@@ -21,6 +28,7 @@ namespace FacturaCar.Features.GameplayFeature
     {
       _car.ResetToStart();
       _turret.ResetAim();
+      _enemySpawner.Respawn();
       _gameInput.Pressed += OnPressed;
     }
 
