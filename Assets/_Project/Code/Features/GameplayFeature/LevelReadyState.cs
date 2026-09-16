@@ -1,28 +1,31 @@
-using System.Threading;
-using Cysharp.Threading.Tasks;
 using FacturaCar.Capabilities.AppFlowCapability;
 
 namespace FacturaCar.Features.GameplayFeature
 {
   public class LevelReadyState : IState
   {
-    private readonly GroundFactory _groundFactory;
-    private readonly CarFactory _carFactory;
+    private readonly IAppStateMachine _appStateMachine;
+    private readonly Car _car;
+    private readonly Turret _turret;
+    private readonly GameInput _gameInput;
 
-    public LevelReadyState(GroundFactory groundFactory, CarFactory carFactory)
+    public LevelReadyState(IAppStateMachine appStateMachine, Car car, Turret turret, GameInput gameInput)
     {
-      _groundFactory = groundFactory;
-      _carFactory = carFactory;
+      _appStateMachine = appStateMachine;
+      _car = car;
+      _turret = turret;
+      _gameInput = gameInput;
     }
 
-    public UniTask EnterAsync(CancellationToken ct)
+    public void Enter()
     {
-      _groundFactory.Create();
-      _carFactory.Create();
-
-      return UniTask.CompletedTask;
+      _car.ResetToStart();
+      _turret.ResetAim();
+      _gameInput.Tapped += OnTapped;
     }
 
-    public UniTask ExitAsync() => UniTask.CompletedTask;
+    public void Exit() => _gameInput.Tapped -= OnTapped;
+
+    private void OnTapped() => _appStateMachine.Enter<LevelPlayState>();
   }
 }

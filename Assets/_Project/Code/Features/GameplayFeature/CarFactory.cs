@@ -1,4 +1,3 @@
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -15,6 +14,6 @@ namespace FacturaCar.Features.GameplayFeature
       _config = config;
     }
 
-    public GameObject Create() => _resolver.Instantiate(_config.Prefab);
+    public Car Create() => _resolver.Instantiate(_config.Prefab);
   }
 }

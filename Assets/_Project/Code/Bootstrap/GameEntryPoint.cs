@@ -1,13 +1,10 @@
-using System;
-using System.Threading;
-using Cysharp.Threading.Tasks;
 using FacturaCar.Capabilities.AppFlowCapability;
 using FacturaCar.Features.GameplayFeature;
 using VContainer.Unity;
 
 namespace FacturaCar.Bootstrap
 {
-  public class GameEntryPoint : IAsyncStartable
+  public class GameEntryPoint : IStartable
   {
     private readonly IAppStateMachine _appStateMachine;
 
@@ -16,15 +13,6 @@ namespace FacturaCar.Bootstrap
       _appStateMachine = appStateMachine;
     }
 
-    public async UniTask StartAsync(CancellationToken cancellation)
-    {
-      try
-      {
-        await _appStateMachine.Enter<LevelReadyState>();
-      }
-      catch (OperationCanceledException)
-      {
-      }
-    }
+    public void Start() => _appStateMachine.Enter<LevelLoadState>();
   }
 }

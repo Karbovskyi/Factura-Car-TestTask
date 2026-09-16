@@ -1,10 +1,8 @@
-using System.Threading;
-using Cysharp.Threading.Tasks;
-
 namespace FacturaCar.Capabilities.AppFlowCapability
 {
-  public interface IState : IExitableState
+  public interface IState
   {
-    UniTask EnterAsync(CancellationToken ct);
+    void Enter();
+    void Exit();
   }
 }

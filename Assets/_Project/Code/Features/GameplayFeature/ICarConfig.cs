@@ -1,9 +1,10 @@
-using UnityEngine;
-
 namespace FacturaCar.Features.GameplayFeature
 {
   public interface ICarConfig
   {
-    GameObject Prefab { get; }
+    Car Prefab { get; }
+    float Speed { get; }
+    float Acceleration { get; }
+    float Braking { get; }
   }
 }
