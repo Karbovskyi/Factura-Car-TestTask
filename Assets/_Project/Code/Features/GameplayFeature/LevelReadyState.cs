@@ -6,15 +6,18 @@ namespace FacturaCar.Features.GameplayFeature
 {
   public class LevelReadyState : IState
   {
+    private readonly GroundFactory _groundFactory;
     private readonly CarFactory _carFactory;
 
-    public LevelReadyState(CarFactory carFactory)
+    public LevelReadyState(GroundFactory groundFactory, CarFactory carFactory)
     {
+      _groundFactory = groundFactory;
       _carFactory = carFactory;
     }
 
     public UniTask EnterAsync(CancellationToken ct)
     {
+      _groundFactory.Create();
       _carFactory.Create();
 
       return UniTask.CompletedTask;

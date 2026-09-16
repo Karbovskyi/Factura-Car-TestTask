@@ -417,6 +417,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _carConfig: {fileID: 11400000, guid: 7370fe875d095a743ad9224e649553f3, type: 2}
+  _levelConfig: {fileID: 11400000, guid: 1b6ac8ac550e01140ae21c4671dd1f87, type: 2}
 --- !u!4 &533075449
 Transform:
   m_ObjectHideFlags: 0
