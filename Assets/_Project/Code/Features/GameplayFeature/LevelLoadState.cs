@@ -9,7 +9,7 @@ namespace FacturaCar.Features.GameplayFeature
     private readonly FinishLine _finishLine;
     private readonly ILevelConfig _levelConfig;
     private readonly Car _car;
-    private readonly CameraFollow _cameraFollow;
+    private readonly CarCamera _carCamera;
 
     public LevelLoadState(
       IAppStateMachine appStateMachine,
@@ -17,21 +17,21 @@ namespace FacturaCar.Features.GameplayFeature
       FinishLine finishLine,
       ILevelConfig levelConfig,
       Car car,
-      CameraFollow cameraFollow)
+      CarCamera carCamera)
     {
       _appStateMachine = appStateMachine;
       _groundFactory = groundFactory;
       _finishLine = finishLine;
       _levelConfig = levelConfig;
       _car = car;
-      _cameraFollow = cameraFollow;
+      _carCamera = carCamera;
     }
 
     public void Enter()
     {
       _groundFactory.Create();
       _finishLine.PlaceAt(_levelConfig.Length);
-      _cameraFollow.Follow(_car.transform);
+      _carCamera.Follow(_car.transform);
 
       _appStateMachine.Enter<LevelReadyState>();
     }

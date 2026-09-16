@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c08d28b99f022c48825ddc1255924d4, type: 3}
   m_Name: LevelConfig
   m_EditorClassIdentifier: Assembly-CSharp::FacturaCar.Features.GameplayFeature.LevelConfig
-  _length: 300
+  _length: 600
   _groundSegmentPrefab: {fileID: 3621597202232500458, guid: cf810a8d0cc5f7a47ba62f910409880b, type: 3}
-  _enemyCount: 30
+  _enemyCount: 60
   _enemySpawnStartDistance: 30
   _enemySpawnHalfWidth: 8

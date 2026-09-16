@@ -7,12 +7,14 @@ namespace FacturaCar.Features.GameplayFeature
   public class Car : MonoBehaviour
   {
     [SerializeField] private Turret _turret;
+    [SerializeField] private CarView _view;
 
     private ICarConfig _config;
     private Vector3 _startPosition;
     private int _health;
     private float _speed;
     private float _targetSpeed;
+    private float _launchDelay;
 
     public event Action HealthChanged;
     public event Action Died;
@@ -26,7 +28,11 @@ namespace FacturaCar.Features.GameplayFeature
       _config = config;
     }
 
-    public void StartDriving() => _targetSpeed = _config.Speed;
+    public void StartDriving()
+    {
+      _targetSpeed = _config.Speed;
+      _launchDelay = _config.LaunchDelay;
+    }
 
     public void Stop() => _targetSpeed = 0f;
 
@@ -47,6 +53,7 @@ namespace FacturaCar.Features.GameplayFeature
       transform.position = _startPosition;
       _speed = 0f;
       _targetSpeed = 0f;
+      _launchDelay = 0f;
       _health = _config.MaxHealth;
       HealthChanged?.Invoke();
     }
@@ -57,6 +64,16 @@ namespace FacturaCar.Features.GameplayFeature
     }
 
     private void Update()
+    {
+      if (_launchDelay > 0f)
+        _launchDelay -= Time.deltaTime;
+      else
+        Drive();
+
+      _view.SetMotion(_speed, _targetSpeed);
+    }
+
+    private void Drive()
     {
       float rate = _targetSpeed > _speed ? _config.Acceleration : _config.Braking;
 

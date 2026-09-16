@@ -10,11 +10,13 @@ namespace FacturaCar.Features.GameplayFeature
     [SerializeField, Min(0f)] private float _speed;
     [SerializeField, Min(0f)] private float _acceleration;
     [SerializeField, Min(0f)] private float _braking;
+    [SerializeField, Min(0f)] private float _launchDelay;
 
     public Car Prefab => _prefab;
     public int MaxHealth => _maxHealth;
     public float Speed => _speed;
     public float Acceleration => _acceleration;
     public float Braking => _braking;
+    public float LaunchDelay => _launchDelay;
   }
 }

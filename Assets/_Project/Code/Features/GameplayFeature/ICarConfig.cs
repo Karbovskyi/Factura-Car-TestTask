@@ -7,5 +7,6 @@ namespace FacturaCar.Features.GameplayFeature
     float Speed { get; }
     float Acceleration { get; }
     float Braking { get; }
+    float LaunchDelay { get; }
   }
 }

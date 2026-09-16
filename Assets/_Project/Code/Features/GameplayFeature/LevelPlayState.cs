@@ -9,24 +9,28 @@ namespace FacturaCar.Features.GameplayFeature
     private readonly Turret _turret;
     private readonly FinishLine _finishLine;
     private readonly GameInput _gameInput;
+    private readonly CarCamera _carCamera;
 
     public LevelPlayState(
       IAppStateMachine appStateMachine,
       Car car,
       Turret turret,
       FinishLine finishLine,
-      GameInput gameInput)
+      GameInput gameInput,
+      CarCamera carCamera)
     {
       _appStateMachine = appStateMachine;
       _car = car;
       _turret = turret;
       _finishLine = finishLine;
       _gameInput = gameInput;
+      _carCamera = carCamera;
     }
 
     public void Enter()
     {
       _car.StartDriving();
+      _carCamera.PlayLaunch();
 
       if (_gameInput.IsPressed)
         _turret.StartFiring();

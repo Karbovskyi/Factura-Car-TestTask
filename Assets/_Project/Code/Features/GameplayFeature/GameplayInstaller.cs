@@ -10,7 +10,7 @@ namespace FacturaCar.Features.GameplayFeature
     private readonly BulletConfig _bulletConfig;
     private readonly EnemyConfig _enemyConfig;
     private readonly LevelConfig _levelConfig;
-    private readonly CameraFollow _cameraFollow;
+    private readonly CarCamera _carCamera;
     private readonly FinishLine _finishLine;
     private readonly ResultView _resultView;
 
@@ -20,7 +20,7 @@ namespace FacturaCar.Features.GameplayFeature
       BulletConfig bulletConfig,
       EnemyConfig enemyConfig,
       LevelConfig levelConfig,
-      CameraFollow cameraFollow,
+      CarCamera carCamera,
       FinishLine finishLine,
       ResultView resultView)
     {
@@ -29,7 +29,7 @@ namespace FacturaCar.Features.GameplayFeature
       _bulletConfig = bulletConfig;
       _enemyConfig = enemyConfig;
       _levelConfig = levelConfig;
-      _cameraFollow = cameraFollow;
+      _carCamera = carCamera;
       _finishLine = finishLine;
       _resultView = resultView;
     }
@@ -41,7 +41,7 @@ namespace FacturaCar.Features.GameplayFeature
       builder.RegisterInstance<IBulletConfig>(_bulletConfig);
       builder.RegisterInstance<IEnemyConfig>(_enemyConfig);
       builder.RegisterInstance<ILevelConfig>(_levelConfig);
-      builder.RegisterComponent(_cameraFollow);
+      builder.RegisterComponent(_carCamera);
       builder.RegisterComponent(_finishLine);
       builder.RegisterComponent(_resultView);
 

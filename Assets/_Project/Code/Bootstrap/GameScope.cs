@@ -13,7 +13,7 @@ namespace FacturaCar.Bootstrap
     [SerializeField] private BulletConfig _bulletConfig;
     [SerializeField] private EnemyConfig _enemyConfig;
     [SerializeField] private LevelConfig _levelConfig;
-    [SerializeField] private CameraFollow _cameraFollow;
+    [SerializeField] private CarCamera _carCamera;
     [SerializeField] private FinishLine _finishLine;
     [SerializeField] private ResultView _resultView;
 
@@ -26,7 +26,7 @@ namespace FacturaCar.Bootstrap
           _bulletConfig,
           _enemyConfig,
           _levelConfig,
-          _cameraFollow,
+          _carCamera,
           _finishLine,
           _resultView)
         .Install(builder);
