@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FacturaCar.Features.GameplayFeature.CarConfig
   _prefab: {fileID: 2413859623162947846, guid: f49faef4f6e501b4cb3aa580b2893004, type: 3}
   _maxHealth: 10
-  _speed: 20
+  _speed: 10
   _acceleration: 14
   _braking: 16
   _launchDelay: 0.45

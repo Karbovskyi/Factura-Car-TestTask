@@ -10,11 +10,13 @@ namespace FacturaCar.Features.GameplayFeature
     [SerializeField, Min(0)] private int _enemyCount;
     [SerializeField, Min(0f)] private float _enemySpawnStartDistance;
     [SerializeField, Min(0f)] private float _enemySpawnHalfWidth;
+    [SerializeField] private DamageNumber _damageNumberPrefab;
 
     public float Length => _length;
     public GameObject GroundSegmentPrefab => _groundSegmentPrefab;
     public int EnemyCount => _enemyCount;
     public float EnemySpawnStartDistance => _enemySpawnStartDistance;
     public float EnemySpawnHalfWidth => _enemySpawnHalfWidth;
+    public DamageNumber DamageNumberPrefab => _damageNumberPrefab;
   }
 }

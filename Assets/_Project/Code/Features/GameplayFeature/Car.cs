@@ -17,6 +17,7 @@ namespace FacturaCar.Features.GameplayFeature
     private float _launchDelay;
 
     public event Action HealthChanged;
+    public event Action<int, Vector3> Damaged;
     public event Action Died;
 
     public Turret Turret => _turret;
@@ -36,12 +37,14 @@ namespace FacturaCar.Features.GameplayFeature
 
     public void Stop() => _targetSpeed = 0f;
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Vector3 hitPoint)
     {
       if (_health <= 0)
         return;
 
       _health = Mathf.Max(_health - damage, 0);
+      _view.PlayHit(hitPoint);
+      Damaged?.Invoke(damage, hitPoint);
       HealthChanged?.Invoke();
 
       if (_health == 0)

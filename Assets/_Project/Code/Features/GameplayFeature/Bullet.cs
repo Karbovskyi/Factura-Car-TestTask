@@ -58,7 +58,7 @@ namespace FacturaCar.Features.GameplayFeature
       if (!isHit || !hit.collider.TryGetComponent(out Enemy enemy))
         return false;
 
-      enemy.TakeDamage(_config.Damage);
+      enemy.TakeDamage(_config.Damage, transform.forward);
 
       return true;
     }

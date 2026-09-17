@@ -10,25 +10,38 @@ namespace FacturaCar.Features.GameplayFeature
     private IEnemyConfig _config;
     private Car _car;
     private EnemySplatFactory _splatFactory;
+    private DamageNumberFactory _damageNumberFactory;
     private int _health;
     private bool _isChasing;
     private bool _isStopped;
 
     [Inject]
-    public void Construct(IEnemyConfig config, Car car, EnemySplatFactory splatFactory)
+    public void Construct(
+      IEnemyConfig config,
+      Car car,
+      EnemySplatFactory splatFactory,
+      DamageNumberFactory damageNumberFactory)
     {
       _config = config;
       _car = car;
       _splatFactory = splatFactory;
+      _damageNumberFactory = damageNumberFactory;
       _health = config.MaxHealth;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Vector3 hitDirection)
     {
       _health -= damage;
+      _damageNumberFactory.Create(damage, transform.position);
 
       if (_health <= 0)
+      {
         Die();
+        return;
+      }
+
+      _view.ShowHealth((float)_health / _config.MaxHealth);
+      _view.PlayHit(hitDirection);
     }
 
     public void Stop()
@@ -60,7 +73,7 @@ namespace FacturaCar.Features.GameplayFeature
       if (!other.TryGetComponent(out Car car))
         return;
 
-      car.TakeDamage(_config.ContactDamage);
+      car.TakeDamage(_config.ContactDamage, transform.position);
       Die();
     }
 

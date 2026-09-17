@@ -11,7 +11,7 @@ namespace FacturaCar.Features.GameplayFeature
     [SerializeField] private Gradient _colorByHealth;
     [SerializeField] private TweenSettings _fillTween;
 
-    private float _shownHealth;
+    private float _shownHealth = 1f;
 
     public void SetHealth(float fraction)
     {
