@@ -11,6 +11,9 @@ namespace FacturaCar.Features.GameplayFeature
     [SerializeField, Min(0f)] private float _acceleration;
     [SerializeField, Min(0f)] private float _braking;
     [SerializeField, Min(0f)] private float _launchDelay;
+    [SerializeField, Min(0f)] private float _weaveAmplitude;
+    [SerializeField, Min(0.1f)] private float _weaveWavelength;
+    [SerializeField, Min(0.1f)] private float _weaveRampDistance;
 
     public Car Prefab => _prefab;
     public int MaxHealth => _maxHealth;
@@ -18,5 +21,8 @@ namespace FacturaCar.Features.GameplayFeature
     public float Acceleration => _acceleration;
     public float Braking => _braking;
     public float LaunchDelay => _launchDelay;
+    public float WeaveAmplitude => _weaveAmplitude;
+    public float WeaveWavelength => _weaveWavelength;
+    public float WeaveRampDistance => _weaveRampDistance;
   }
 }

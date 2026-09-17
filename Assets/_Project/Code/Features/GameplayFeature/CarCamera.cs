@@ -4,9 +4,11 @@ using UnityEngine;
 
 namespace FacturaCar.Features.GameplayFeature
 {
+  [DefaultExecutionOrder(-1)]
   public class CarCamera : MonoBehaviour
   {
     [SerializeField] private CinemachineCamera _camera;
+    [SerializeField] private Transform _anchor;
     [SerializeField] private CinemachineFollow _follow;
     [SerializeField] private CinemachineRotationComposer _composer;
     [SerializeField] private CinemachineBasicMultiChannelPerlin _noise;
@@ -17,9 +19,15 @@ namespace FacturaCar.Features.GameplayFeature
     [SerializeField] private AnimationCurve _lookAhead;
     [SerializeField] private AnimationCurve _shake;
 
+    private Transform _car;
     private Tween _launch;
 
-    public void Follow(Transform target) => _camera.Follow = target;
+    public void Follow(Transform car)
+    {
+      _car = car;
+      _camera.Follow = _anchor;
+      MoveAnchor();
+    }
 
     public void ShowPreview()
     {
@@ -33,6 +41,16 @@ namespace FacturaCar.Features.GameplayFeature
 
       _launch.Stop();
       _launch = Tween.Custom(this, 0f, duration, duration, (self, time) => self.ShowAt(time), Ease.Linear);
+    }
+
+    private void LateUpdate() => MoveAnchor();
+
+    private void MoveAnchor()
+    {
+      if (_car == null)
+        return;
+
+      _anchor.position = new Vector3(_anchor.position.x, _car.position.y, _car.position.z);
     }
 
     private void ShowAt(float time)

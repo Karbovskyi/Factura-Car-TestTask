@@ -16,5 +16,5 @@ MonoBehaviour:
   _splatPrefab: {fileID: 5285923053336063219, guid: c8889e8df636e0949925f8aa0651bcde, type: 3}
   _maxHealth: 3
   _contactDamage: 1
-  _runSpeed: 4
+  _runSpeed: 3
   _aggroDistance: 25

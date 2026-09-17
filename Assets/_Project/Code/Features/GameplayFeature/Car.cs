@@ -6,6 +6,8 @@ namespace FacturaCar.Features.GameplayFeature
 {
   public class Car : MonoBehaviour
   {
+    private const float WeaveSlopeStep = 0.1f;
+
     [SerializeField] private Turret _turret;
     [SerializeField] private CarView _view;
 
@@ -15,6 +17,7 @@ namespace FacturaCar.Features.GameplayFeature
     private float _speed;
     private float _targetSpeed;
     private float _launchDelay;
+    private float _distance;
 
     public event Action HealthChanged;
     public event Action<int, Vector3> Damaged;
@@ -47,13 +50,19 @@ namespace FacturaCar.Features.GameplayFeature
       Damaged?.Invoke(damage, hitPoint);
       HealthChanged?.Invoke();
 
-      if (_health == 0)
-        Died?.Invoke();
+      if (_health > 0)
+        return;
+
+      Explode();
+      Died?.Invoke();
     }
 
     public void ResetToStart()
     {
-      transform.position = _startPosition;
+      _distance = 0f;
+      PlaceOnRoad();
+      _view.ResetExplosion();
+      _view.ClearTracks();
       _speed = 0f;
       _targetSpeed = 0f;
       _launchDelay = 0f;
@@ -76,12 +85,40 @@ namespace FacturaCar.Features.GameplayFeature
       _view.SetMotion(_speed, _targetSpeed);
     }
 
+    private void Explode()
+    {
+      Vector3 velocity = transform.forward * _speed;
+
+      _speed = 0f;
+      _targetSpeed = 0f;
+      _view.PlayExplosion(velocity);
+    }
+
     private void Drive()
     {
       float rate = _targetSpeed > _speed ? _config.Acceleration : _config.Braking;
 
       _speed = Mathf.MoveTowards(_speed, _targetSpeed, rate * Time.deltaTime);
-      transform.position += transform.forward * (_speed * Time.deltaTime);
+      _distance += _speed * Time.deltaTime;
+      PlaceOnRoad();
+    }
+
+    private void PlaceOnRoad()
+    {
+      float offset = WeaveOffset(_distance);
+      float slope = (WeaveOffset(_distance + WeaveSlopeStep) - offset) / WeaveSlopeStep;
+
+      transform.SetPositionAndRotation(
+        _startPosition + Vector3.forward * _distance + Vector3.right * offset,
+        Quaternion.LookRotation(new Vector3(slope, 0f, 1f)));
+    }
+
+    private float WeaveOffset(float distance)
+    {
+      float ramp = Mathf.SmoothStep(0f, 1f, distance / _config.WeaveRampDistance);
+      float wave = Mathf.Sin(distance / _config.WeaveWavelength * 2f * Mathf.PI);
+
+      return wave * _config.WeaveAmplitude * ramp;
     }
   }
 }

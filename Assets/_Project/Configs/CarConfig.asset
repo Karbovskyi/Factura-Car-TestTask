@@ -18,3 +18,6 @@ MonoBehaviour:
   _acceleration: 14
   _braking: 16
   _launchDelay: 0.45
+  _weaveAmplitude: 1
+  _weaveWavelength: 100
+  _weaveRampDistance: 20

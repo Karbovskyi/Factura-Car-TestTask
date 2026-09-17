@@ -27,6 +27,9 @@ namespace FacturaCar.Features.GameplayFeature
     [SerializeField, Min(0f)] private float _burnoutDustRate;
     [SerializeField, Min(0f)] private float _dustPerMeter;
 
+    [Header("Tire Tracks")]
+    [SerializeField] private TrailRenderer[] _tireTracks;
+
     [Header("Hit Flash")]
     [SerializeField] private MeshRenderer[] _hitFlashRenderers;
     [SerializeField] private Material _hitFlashMaterial;
@@ -40,6 +43,15 @@ namespace FacturaCar.Features.GameplayFeature
     [SerializeField, Min(0f)] private float _hitDuration;
     [SerializeField, Min(0f)] private float _hitFrequency;
 
+    [Header("Explosion")]
+    [SerializeField] private Transform _wreck;
+    [SerializeField] private Rigidbody[] _wreckPieces;
+    [SerializeField] private ParticleSystem[] _explosionEffects;
+    [SerializeField, Min(0f)] private float _explosionSpeed;
+    [SerializeField, Min(0f)] private float _explosionRadius;
+    [SerializeField, Min(0f)] private float _explosionLift;
+    [SerializeField, Min(0f)] private float _explosionSpin;
+
     private Vector3 _chassisOrigin;
     private float _speed;
     private float _slip;
@@ -49,11 +61,60 @@ namespace FacturaCar.Features.GameplayFeature
     private Vector3 _hitOffset;
     private Vector3 _hitRotation;
     private Sequence _hit;
+    private Pose _wreckPose;
+    private Pose[] _wreckPiecePoses;
 
     public void SetMotion(float speed, float targetSpeed)
     {
       _speed = speed;
       _slip = targetSpeed > 0f ? Mathf.SmoothStep(0f, 1f, 1f - speed / targetSpeed) : 0f;
+    }
+
+    public void PlayExplosion(Vector3 velocity)
+    {
+      Vector3 center = _hitShape.bounds.center;
+
+      _chassis.gameObject.SetActive(false);
+      _wreck.SetParent(null, true);
+      _wreck.gameObject.SetActive(true);
+      IgnoreWreckOverlaps();
+
+      foreach (Rigidbody piece in _wreckPieces)
+      {
+        piece.linearVelocity = velocity;
+        piece.AddExplosionForce(_explosionSpeed, center, _explosionRadius, _explosionLift, ForceMode.VelocityChange);
+        piece.AddTorque(UnityEngine.Random.insideUnitSphere * _explosionSpin, ForceMode.VelocityChange);
+      }
+
+      foreach (ParticleSystem effect in _explosionEffects)
+        effect.Play();
+    }
+
+    public void ResetExplosion()
+    {
+      if (!_wreck.gameObject.activeSelf)
+        return;
+
+      for (int i = 0; i < _wreckPieces.Length; i++)
+      {
+        _wreckPieces[i].linearVelocity = Vector3.zero;
+        _wreckPieces[i].angularVelocity = Vector3.zero;
+        _wreckPieces[i].transform.SetLocalPositionAndRotation(_wreckPiecePoses[i].position, _wreckPiecePoses[i].rotation);
+      }
+
+      foreach (ParticleSystem effect in _explosionEffects)
+        effect.Clear();
+
+      _wreck.gameObject.SetActive(false);
+      _wreck.SetParent(transform, false);
+      _wreck.SetLocalPositionAndRotation(_wreckPose.position, _wreckPose.rotation);
+      _chassis.gameObject.SetActive(true);
+    }
+
+    public void ClearTracks()
+    {
+      foreach (TrailRenderer track in _tireTracks)
+        track.Clear();
     }
 
     public void PlayHit(Vector3 hitPoint)
@@ -76,6 +137,7 @@ namespace FacturaCar.Features.GameplayFeature
     {
       _chassisOrigin = _chassis.localPosition;
       CacheMaterials();
+      PrepareWreck();
     }
 
     private void Update()
@@ -130,6 +192,30 @@ namespace FacturaCar.Features.GameplayFeature
     }
 
     private ShakeSettings HitShake(Vector3 strength) => new ShakeSettings(strength, _hitDuration, _hitFrequency);
+
+    private void IgnoreWreckOverlaps()
+    {
+      for (int i = 0; i < _wreckPieces.Length; i++)
+      {
+        Collider piece = _wreckPieces[i].GetComponent<Collider>();
+        Physics.IgnoreCollision(piece, _hitShape);
+
+        for (int j = i + 1; j < _wreckPieces.Length; j++)
+          Physics.IgnoreCollision(piece, _wreckPieces[j].GetComponent<Collider>());
+      }
+    }
+
+    private void PrepareWreck()
+    {
+      _wreckPose = new Pose(_wreck.localPosition, _wreck.localRotation);
+      _wreckPiecePoses = new Pose[_wreckPieces.Length];
+
+      for (int i = 0; i < _wreckPieces.Length; i++)
+      {
+        Transform piece = _wreckPieces[i].transform;
+        _wreckPiecePoses[i] = new Pose(piece.localPosition, piece.localRotation);
+      }
+    }
 
     private void CacheMaterials()
     {

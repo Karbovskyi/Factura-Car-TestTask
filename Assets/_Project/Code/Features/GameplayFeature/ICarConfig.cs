@@ -8,5 +8,8 @@ namespace FacturaCar.Features.GameplayFeature
     float Acceleration { get; }
     float Braking { get; }
     float LaunchDelay { get; }
+    float WeaveAmplitude { get; }
+    float WeaveWavelength { get; }
+    float WeaveRampDistance { get; }
   }
 }

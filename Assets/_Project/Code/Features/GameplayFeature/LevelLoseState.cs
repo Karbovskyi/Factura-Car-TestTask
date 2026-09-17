@@ -6,17 +6,20 @@ namespace FacturaCar.Features.GameplayFeature
   {
     private readonly IAppStateMachine _appStateMachine;
     private readonly Car _car;
+    private readonly EnemySpawner _enemySpawner;
     private readonly GameplayMediator _gameplayMediator;
     private readonly GameInput _gameInput;
 
     public LevelLoseState(
       IAppStateMachine appStateMachine,
       Car car,
+      EnemySpawner enemySpawner,
       GameplayMediator gameplayMediator,
       GameInput gameInput)
     {
       _appStateMachine = appStateMachine;
       _car = car;
+      _enemySpawner = enemySpawner;
       _gameplayMediator = gameplayMediator;
       _gameInput = gameInput;
     }
@@ -24,6 +27,7 @@ namespace FacturaCar.Features.GameplayFeature
     public void Enter()
     {
       _car.Stop();
+      _enemySpawner.StopAll();
       _gameplayMediator.ShowLose();
       _gameInput.Pressed += OnPressed;
     }
