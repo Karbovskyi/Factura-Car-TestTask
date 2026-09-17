@@ -49,6 +49,7 @@ namespace FacturaCar.Features.GameplayFeature
       builder.Register<GroundFactory>(Lifetime.Scoped);
       builder.Register<BulletFactory>(Lifetime.Scoped);
       builder.Register<EnemyFactory>(Lifetime.Scoped);
+      builder.Register<EnemySplatFactory>(Lifetime.Scoped);
       builder.Register<EnemySpawner>(Lifetime.Scoped);
       builder.Register<CarFactory>(Lifetime.Scoped);
       builder.Register(resolver => resolver.Resolve<CarFactory>().Create(), Lifetime.Scoped);

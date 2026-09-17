@@ -5,17 +5,21 @@ namespace FacturaCar.Features.GameplayFeature
 {
   public class Enemy : MonoBehaviour
   {
+    [SerializeField] private EnemyView _view;
+
     private IEnemyConfig _config;
     private Car _car;
+    private EnemySplatFactory _splatFactory;
     private int _health;
     private bool _isChasing;
     private bool _isStopped;
 
     [Inject]
-    public void Construct(IEnemyConfig config, Car car)
+    public void Construct(IEnemyConfig config, Car car, EnemySplatFactory splatFactory)
     {
       _config = config;
       _car = car;
+      _splatFactory = splatFactory;
       _health = config.MaxHealth;
     }
 
@@ -27,7 +31,14 @@ namespace FacturaCar.Features.GameplayFeature
         Die();
     }
 
-    public void Stop() => _isStopped = true;
+    public void Stop()
+    {
+      if (!isActiveAndEnabled)
+        return;
+
+      _isStopped = true;
+      _view.PlayIdle();
+    }
 
     private void Update()
     {
@@ -37,8 +48,8 @@ namespace FacturaCar.Features.GameplayFeature
       Vector3 toCar = _car.transform.position - transform.position;
       toCar.y = 0f;
 
-      if (!_isChasing)
-        _isChasing = toCar.magnitude <= _config.AggroDistance;
+      if (!_isChasing && toCar.magnitude <= _config.AggroDistance)
+        StartChasing();
 
       if (_isChasing && toCar != Vector3.zero)
         RunTowards(toCar);
@@ -53,6 +64,12 @@ namespace FacturaCar.Features.GameplayFeature
       Die();
     }
 
+    private void StartChasing()
+    {
+      _isChasing = true;
+      _view.PlayRun(_config.RunSpeed);
+    }
+
     private void RunTowards(Vector3 toCar)
     {
       transform.rotation = Quaternion.LookRotation(toCar);
@@ -62,6 +79,10 @@ namespace FacturaCar.Features.GameplayFeature
         _config.RunSpeed * Time.deltaTime);
     }
 
-    private void Die() => gameObject.SetActive(false);
+    private void Die()
+    {
+      _splatFactory.Create(transform.position);
+      gameObject.SetActive(false);
+    }
   }
 }
