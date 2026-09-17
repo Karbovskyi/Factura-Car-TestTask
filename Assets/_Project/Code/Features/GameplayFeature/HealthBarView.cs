@@ -21,6 +21,12 @@ namespace FacturaCar.Features.GameplayFeature
       Tween.Custom(this, settings, (self, value) => self.ShowHealth(value));
     }
 
+    public void SetHealthInstantly(float fraction)
+    {
+      Tween.StopAll(onTarget: this);
+      ShowHealth(fraction);
+    }
+
     private void ShowHealth(float fraction)
     {
       _shownHealth = fraction;

@@ -33,6 +33,17 @@ namespace FacturaCar.Features.GameplayFeature
     private Transform _camera;
     private Sequence _hit;
 
+    public void ResetToIdle()
+    {
+      _hit.Stop();
+      ResetBody();
+      ShowMaterial();
+      _healthBar.SetHealthInstantly(1f);
+      _healthBar.gameObject.SetActive(false);
+      PlayIdle();
+      _animator.Play(IdleState, 0, Random.value);
+    }
+
     public void PlayIdle() => _animator.SetBool(IsRunning, false);
 
     public void PlayRun(float speed)
@@ -53,8 +64,7 @@ namespace FacturaCar.Features.GameplayFeature
       Vector3 tilt = Vector3.Cross(Vector3.up, push) * _hitTiltAngle;
 
       _hit.Stop();
-      _body.localPosition = Vector3.zero;
-      _body.localRotation = Quaternion.identity;
+      ResetBody();
       _renderer.sharedMaterial = _hitFlashMaterial;
       _animator.SetTrigger(Hit);
 
@@ -70,9 +80,13 @@ namespace FacturaCar.Features.GameplayFeature
       _camera = Camera.main.transform;
     }
 
-    private void Start() => _animator.Play(IdleState, 0, Random.value);
-
     private void LateUpdate() => _healthBar.transform.rotation = _camera.rotation;
+
+    private void ResetBody()
+    {
+      _body.localPosition = Vector3.zero;
+      _body.localRotation = Quaternion.identity;
+    }
 
     private void ShowMaterial() => _renderer.sharedMaterial = _material;
   }

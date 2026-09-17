@@ -17,4 +17,7 @@ MonoBehaviour:
   _enemyCount: 50
   _enemySpawnStartDistance: 30
   _enemySpawnHalfWidth: 8
+  _enemyMinSpacing: 0.8
+  _enemySpawnAheadDistance: 40
+  _enemyDespawnBehindDistance: 10
   _damageNumberPrefab: {fileID: 4324995558259416112, guid: 78f9026884c68464688b128e881346ed, type: 3}

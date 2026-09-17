@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.Pool;
 using VContainer;
 
 namespace FacturaCar.Features.GameplayFeature
@@ -11,9 +13,12 @@ namespace FacturaCar.Features.GameplayFeature
     private Car _car;
     private EnemySplatFactory _splatFactory;
     private DamageNumberFactory _damageNumberFactory;
+    private IObjectPool<Enemy> _pool;
     private int _health;
     private bool _isChasing;
     private bool _isStopped;
+
+    public event Action<Enemy> Despawned;
 
     [Inject]
     public void Construct(
@@ -26,7 +31,23 @@ namespace FacturaCar.Features.GameplayFeature
       _car = car;
       _splatFactory = splatFactory;
       _damageNumberFactory = damageNumberFactory;
-      _health = config.MaxHealth;
+    }
+
+    public void Initialize(IObjectPool<Enemy> pool) => _pool = pool;
+
+    public void Spawn(Vector3 position)
+    {
+      transform.SetPositionAndRotation(position, Quaternion.LookRotation(Vector3.back));
+      _health = _config.MaxHealth;
+      _isChasing = false;
+      _isStopped = false;
+      _view.ResetToIdle();
+    }
+
+    public void Despawn()
+    {
+      _pool.Release(this);
+      Despawned?.Invoke(this);
     }
 
     public void TakeDamage(int damage, Vector3 hitDirection)
@@ -46,9 +67,6 @@ namespace FacturaCar.Features.GameplayFeature
 
     public void Stop()
     {
-      if (!isActiveAndEnabled)
-        return;
-
       _isStopped = true;
       _view.PlayIdle();
     }
@@ -95,7 +113,7 @@ namespace FacturaCar.Features.GameplayFeature
     private void Die()
     {
       _splatFactory.Create(transform.position);
-      gameObject.SetActive(false);
+      Despawn();
     }
   }
 }
