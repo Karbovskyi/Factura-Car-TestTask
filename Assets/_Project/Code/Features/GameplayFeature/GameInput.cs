@@ -10,15 +10,16 @@ namespace FacturaCar.Features.GameplayFeature
 
     public event Action Pressed;
     public event Action Released;
-    public event Action<float> Dragged;
+    public event Action<float> Aimed;
 
     public bool IsPressed => _controls.Gameplay.Press.IsPressed();
+    public float AimOffset => ToAimOffset(_controls.Gameplay.Point.ReadValue<Vector2>());
 
     public GameInput()
     {
       _controls.Gameplay.Press.performed += OnPressPerformed;
       _controls.Gameplay.Press.canceled += OnPressCanceled;
-      _controls.Gameplay.Drag.performed += OnDragPerformed;
+      _controls.Gameplay.Point.performed += OnPointPerformed;
       _controls.Gameplay.Enable();
     }
 
@@ -26,20 +27,27 @@ namespace FacturaCar.Features.GameplayFeature
     {
       _controls.Gameplay.Press.performed -= OnPressPerformed;
       _controls.Gameplay.Press.canceled -= OnPressCanceled;
-      _controls.Gameplay.Drag.performed -= OnDragPerformed;
+      _controls.Gameplay.Point.performed -= OnPointPerformed;
       _controls.Dispose();
     }
 
-    private void OnPressPerformed(InputAction.CallbackContext context) => Pressed?.Invoke();
+    private void OnPressPerformed(InputAction.CallbackContext context)
+    {
+      Pressed?.Invoke();
+      Aimed?.Invoke(AimOffset);
+    }
 
     private void OnPressCanceled(InputAction.CallbackContext context) => Released?.Invoke();
 
-    private void OnDragPerformed(InputAction.CallbackContext context)
+    private void OnPointPerformed(InputAction.CallbackContext context)
     {
       if (!IsPressed)
         return;
 
-      Dragged?.Invoke(context.ReadValue<Vector2>().x / Screen.width);
+      Aimed?.Invoke(ToAimOffset(context.ReadValue<Vector2>()));
     }
+
+    private static float ToAimOffset(Vector2 screenPosition) =>
+      Mathf.Clamp(screenPosition.x / Screen.width * 2f - 1f, -1f, 1f);
   }
 }

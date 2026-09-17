@@ -105,7 +105,7 @@ namespace FacturaCar.Features.GameplayFeature
                     ""priority"": 0
                 },
                 {
-                    ""name"": ""Drag"",
+                    ""name"": ""Point"",
                     ""type"": ""PassThrough"",
                     ""id"": ""3cd4b4b8-fc07-451d-85bd-becb42003195"",
                     ""expectedControlType"": ""Vector2"",
@@ -130,11 +130,11 @@ namespace FacturaCar.Features.GameplayFeature
                 {
                     ""name"": """",
                     ""id"": ""976d4437-4466-4a75-80e2-32b315a6b103"",
-                    ""path"": ""<Pointer>/delta"",
+                    ""path"": ""<Pointer>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Drag"",
+                    ""action"": ""Point"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -146,7 +146,7 @@ namespace FacturaCar.Features.GameplayFeature
             // Gameplay
             m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
             m_Gameplay_Press = m_Gameplay.FindAction("Press", throwIfNotFound: true);
-            m_Gameplay_Drag = m_Gameplay.FindAction("Drag", throwIfNotFound: true);
+            m_Gameplay_Point = m_Gameplay.FindAction("Point", throwIfNotFound: true);
         }
 
         ~@GameControls()
@@ -228,7 +228,7 @@ namespace FacturaCar.Features.GameplayFeature
         private readonly InputActionMap m_Gameplay;
         private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
         private readonly InputAction m_Gameplay_Press;
-        private readonly InputAction m_Gameplay_Drag;
+        private readonly InputAction m_Gameplay_Point;
         /// <summary>
         /// Provides access to input actions defined in input action map "Gameplay".
         /// </summary>
@@ -245,9 +245,9 @@ namespace FacturaCar.Features.GameplayFeature
             /// </summary>
             public InputAction @Press => m_Wrapper.m_Gameplay_Press;
             /// <summary>
-            /// Provides access to the underlying input action "Gameplay/Drag".
+            /// Provides access to the underlying input action "Gameplay/Point".
             /// </summary>
-            public InputAction @Drag => m_Wrapper.m_Gameplay_Drag;
+            public InputAction @Point => m_Wrapper.m_Gameplay_Point;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -277,9 +277,9 @@ namespace FacturaCar.Features.GameplayFeature
                 @Press.started += instance.OnPress;
                 @Press.performed += instance.OnPress;
                 @Press.canceled += instance.OnPress;
-                @Drag.started += instance.OnDrag;
-                @Drag.performed += instance.OnDrag;
-                @Drag.canceled += instance.OnDrag;
+                @Point.started += instance.OnPoint;
+                @Point.performed += instance.OnPoint;
+                @Point.canceled += instance.OnPoint;
             }
 
             /// <summary>
@@ -294,9 +294,9 @@ namespace FacturaCar.Features.GameplayFeature
                 @Press.started -= instance.OnPress;
                 @Press.performed -= instance.OnPress;
                 @Press.canceled -= instance.OnPress;
-                @Drag.started -= instance.OnDrag;
-                @Drag.performed -= instance.OnDrag;
-                @Drag.canceled -= instance.OnDrag;
+                @Point.started -= instance.OnPoint;
+                @Point.performed -= instance.OnPoint;
+                @Point.canceled -= instance.OnPoint;
             }
 
             /// <summary>
@@ -345,12 +345,12 @@ namespace FacturaCar.Features.GameplayFeature
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnPress(InputAction.CallbackContext context);
             /// <summary>
-            /// Method invoked when associated input action "Drag" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// Method invoked when associated input action "Point" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
             /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnDrag(InputAction.CallbackContext context);
+            void OnPoint(InputAction.CallbackContext context);
         }
     }
 }

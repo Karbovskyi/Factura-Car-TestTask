@@ -6,12 +6,12 @@ namespace FacturaCar.Features.GameplayFeature
   public class TurretConfig : ScriptableObject, ITurretConfig
   {
     [SerializeField, Range(0f, 180f)] private float _maxAngle;
-    [SerializeField, Min(0f)] private float _degreesPerScreenWidth;
+    [SerializeField, Min(1f)] private float _aimExponent;
     [SerializeField, Min(0f)] private float _rotationSpeed;
     [SerializeField, Min(0.1f)] private float _fireRate;
 
     public float MaxAngle => _maxAngle;
-    public float DegreesPerScreenWidth => _degreesPerScreenWidth;
+    public float AimExponent => _aimExponent;
     public float RotationSpeed => _rotationSpeed;
     public float FireRate => _fireRate;
   }

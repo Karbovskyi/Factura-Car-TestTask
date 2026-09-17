@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: TurretConfig
   m_EditorClassIdentifier: Assembly-CSharp::FacturaCar.Features.GameplayFeature.TurretConfig
   _maxAngle: 70
-  _degreesPerScreenWidth: 180
+  _aimExponent: 2
   _rotationSpeed: 360
   _fireRate: 8

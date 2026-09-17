@@ -33,13 +33,16 @@ namespace FacturaCar.Features.GameplayFeature
       _carCamera.PlayLaunch();
 
       if (_gameInput.IsPressed)
+      {
         _turret.StartFiring();
+        _turret.Aim(_gameInput.AimOffset);
+      }
 
       _finishLine.Reached += OnFinishReached;
       _car.Died += OnCarDied;
       _gameInput.Pressed += OnPressed;
       _gameInput.Released += OnReleased;
-      _gameInput.Dragged += OnDragged;
+      _gameInput.Aimed += OnAimed;
     }
 
     public void Exit()
@@ -48,7 +51,7 @@ namespace FacturaCar.Features.GameplayFeature
       _car.Died -= OnCarDied;
       _gameInput.Pressed -= OnPressed;
       _gameInput.Released -= OnReleased;
-      _gameInput.Dragged -= OnDragged;
+      _gameInput.Aimed -= OnAimed;
 
       _turret.StopFiring();
     }
@@ -61,6 +64,6 @@ namespace FacturaCar.Features.GameplayFeature
 
     private void OnReleased() => _turret.StopFiring();
 
-    private void OnDragged(float screenWidths) => _turret.Aim(screenWidths);
+    private void OnAimed(float offset) => _turret.Aim(offset);
   }
 }

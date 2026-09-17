@@ -21,10 +21,12 @@ namespace FacturaCar.Features.GameplayFeature
       _bulletFactory = bulletFactory;
     }
 
-    public void Aim(float screenWidths)
+    public void Aim(float offset)
     {
-      float angle = _targetAngle + screenWidths * _config.DegreesPerScreenWidth;
-      _targetAngle = Mathf.Clamp(angle, -_config.MaxAngle, _config.MaxAngle);
+      float clampedOffset = Mathf.Clamp(offset, -1f, 1f);
+      float curvedOffset = Mathf.Sign(clampedOffset) * Mathf.Pow(Mathf.Abs(clampedOffset), _config.AimExponent);
+
+      _targetAngle = curvedOffset * _config.MaxAngle;
     }
 
     public void ResetAim()
